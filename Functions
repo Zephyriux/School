@@ -1,0 +1,16 @@
+
+/**
+  Returns the length in cm  
+*/
+float leesLengte(float balkBreedte) {
+  lengte = floor(muisPositieLengte /(balkBreedte / aantalPosities) + 50);
+  return lengte;
+}
+
+/**
+  Returns the weight in kg
+*/
+float leesGewicht(float balkBreedte) { 
+  gewicht = floor(muisPositieGewicht /(balkBreedte / (aantalPosities / 2)) + 50);
+  return gewicht;
+}
