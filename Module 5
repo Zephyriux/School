@@ -1,6 +1,6 @@
 // Martijn Zwaan
 // Module 5
-// 24/9/2017
+// 26/9/2017
 
 void setup() {
   size(800, 550);
@@ -14,11 +14,11 @@ void tekenBMI() {
 }
 
 void tekenTekstLengteGewicht() {
-  float balkBreedte = width - margeBreedte * 2;
+  balkBreedte();
   fill(#FFFFFF);
   textSize(25);
-  text("Lengte: " + leesLengte(balkBreedte) + "cm", margeBreedte, margeHoogte * 2.5);
-  text("Gewicht: " + leesGewicht(balkBreedte) + "kg", margeBreedte, margeHoogte * 4.5);
+  text("Lengte: " + leesLengte(balkBreedte()) + "cm", margeBreedte, margeHoogte * 2.5);
+  text("Gewicht: " + leesGewicht(balkBreedte()) + "kg", margeBreedte, margeHoogte * 4.5);
 }
 
 void tekenBMItekst() {
@@ -41,13 +41,13 @@ int aantalPosities = 200;
 boolean muisBewogen = false;
 
 void draw() {
-  float balkHoogte = height / 15;
-  float balkBreedte = width - margeBreedte * 2;
-  int bmiBoxX = width /3;
+  balkHoogte();
+  balkBreedte();
+  int bmiBoxX = width/3;
   background(#000000);
-  float BMI = leesGewicht(balkBreedte) / (leesLengte(balkBreedte) * leesLengte(balkBreedte));
-  println("lengte: " + leesLengte(balkBreedte));
-  println("gewicht: " + leesGewicht(balkBreedte));
+  float BMI = leesGewicht(balkBreedte()) / (leesLengte(balkBreedte()) * leesLengte(balkBreedte()));
+  println("lengte: " + leesLengte(balkBreedte()));
+  println("gewicht: " + leesGewicht(balkBreedte()));
   fill(#F71616);
   rect(bmiBoxX, height, bmiBoxX, 50000 * - BMI);
   stroke(#FFFFFF);
@@ -55,21 +55,21 @@ void draw() {
   fill(#FFFFFF);
   textSize(12);
   tekenBMItekst();
-  tekenSliders(margeBreedte, margeHoogte, balkBreedte, balkHoogte, aantalPosities);
+  tekenSliders(margeBreedte, margeHoogte, balkBreedte(), balkHoogte(), aantalPosities);
   berekenMuisPositieLengte();
   tekenTekstLengteGewicht();
   berekenMuisPositieGewicht();
 }
 
 int berekenMuisPositieLengte() {
-  float balkHoogte = height/15; 
-  if (mouseY > margeHoogte && mouseY < margeHoogte + balkHoogte && muisBewogen) {
-    int balkBreedte = width - margeBreedte * 2;
+  if (muisOpLengte()) {
+    balkBreedte();
     muisPositieLengte = floor(mouseX - margeBreedte);
     if (mouseX < margeBreedte) {
       muisPositieLengte = 0;
-    } else if (mouseX > balkBreedte) {
-      muisPositieLengte = balkBreedte;
+    } else if (mouseX > balkBreedte()) {
+      muisPositieLengte = balkBreedte();
+      ;
     }
     return muisPositieLengte;
   } else {
@@ -78,14 +78,13 @@ int berekenMuisPositieLengte() {
 }
 
 int berekenMuisPositieGewicht() {
-  float balkHoogte = height/15; 
-  if (mouseY > margeHoogte * 3 && mouseY < margeHoogte * 3 + balkHoogte && muisBewogen) {
-    int balkBreedte = width - margeBreedte * 2;
+  if (muisOpGewicht()) {
+    balkBreedte();
     muisPositieGewicht = floor(mouseX - margeBreedte);
     if (mouseX < margeBreedte) {
       muisPositieGewicht = 0;
-    } else if (mouseX > balkBreedte) {
-      muisPositieGewicht = balkBreedte;
+    } else if (mouseX > balkBreedte()) {
+      muisPositieGewicht = balkBreedte();
     }
     return muisPositieLengte;
   } else {
@@ -107,12 +106,42 @@ void tekenSliders(int margeBreedte, int margeHoogte, float balkBreedte, float ba
   rect(margeBreedte + muisPositieGewicht, margeHoogte * 3, sliderBreedte, balkHoogte);
 }
 
+int balkHoogte() {
+  int balkHoogte = height / 15;
+  return balkHoogte;
+}
+
+int balkBreedte() {
+  int balkBreedte = width - margeBreedte * 2;
+  return balkBreedte;
+}
+
+boolean muisOpLengte() {
+  boolean muisOpLengte;
+  if (mouseY > margeHoogte && mouseY < margeHoogte + balkHoogte() && muisBewogen) {
+    muisOpLengte = true;
+  } else {
+    muisOpLengte = false;
+  }
+  return muisOpLengte;
+}
+
+boolean muisOpGewicht() {
+  boolean muisOpGewicht;
+  if (mouseY > margeHoogte * 3 && mouseY < margeHoogte * 3 + balkHoogte() && muisBewogen) {
+    muisOpGewicht = true;
+  } else {
+    muisOpGewicht = false;
+  }
+  return muisOpGewicht;
+}
+
 void mousePressed() {  
   muisBewogen = true;
 }
 
 void mouseReleased() {
-  if(muisBewogen) {
-  muisBewogen = false;
+  if (muisBewogen) {
+    muisBewogen = false;
   }
 }
